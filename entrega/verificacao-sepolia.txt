@@ -1,0 +1,13 @@
+✔ Rede: chain ID 11155111 (Sepolia)
+✔ Contrato existe: 0xe17AFC889F63a6f440De2282f8c6aC82c74A3c4B (2652 bytes de bytecode)
+✔ Nome: Kwanzilto
+✔ Símbolo: KWZ
+✔ Decimais: 18
+✔ Fornecimento total: 10000000.0 KWZ
+✔ Dono: 0xd21537efDcfD163aB35010F52aE62a9d452F27cf
+✔ Saldo do dono: 10000000.0 KWZ
+✔ Transação de deploy: 0x2141437a5220d8182639c0fab0f47b7eb668efa72c7276e08148fcd9f50510ac (bloco 11811151, enviada por 0xd21537efDcfD163aB35010F52aE62a9d452F27cf)
+
+Etherscan: https://sepolia.etherscan.io/address/0xe17AFC889F63a6f440De2282f8c6aC82c74A3c4B
+
+Tudo certo.

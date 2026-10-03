@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kwanzilto (KWZ)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#1a2233; --muted:#5b6478; --line:#dde1e8;
+  --accent:#a8660b; --accent-ink:#ffffff; --accent-soft:#fbf1e0; --code-bg:#eef0f4;
+  --ok:#1f7a4d; --err:#b42318;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#12161f; --surface:#1a202b; --ink:#e4e7ee; --muted:#9aa3b5; --line:#2c3444;
+  --accent:#e9a23b; --accent-ink:#1a1405; --accent-soft:#2b2417; --code-bg:#222938;
+  --ok:#5fc592; --err:#f97066; color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body)}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:grid;gap:24px}
+header{display:grid;gap:10px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 clamp(2.4rem,7vw,3.4rem)/1 var(--display);margin:0;letter-spacing:-.02em}
+h1 span{color:var(--accent)}
+h2{font:700 1.25rem/1.2 var(--display);margin:0}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:14px;align-content:start;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px}
+dt{color:var(--muted);font-size:14px}
+dd{margin:0;font:500 14px/1.5 var(--mono);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+label{font-size:14px;color:var(--muted)}
+input{width:100%;font:14px var(--mono);padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+button{font:600 14px var(--body);padding:10px 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.result{font:500 15px/1.5 var(--mono);padding:12px;border-radius:8px;background:var(--code-bg);overflow-wrap:anywhere;min-height:46px}
+.big{font:700 1.6rem/1.2 var(--display)}
+.ok{color:var(--ok)} .err{color:var(--err)}
+a{color:var(--accent)}
+.note{font-size:13px;color:var(--muted);margin:0}
+footer{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Token ERC-20 · Rede Sepolia</div>
+    <h1>Kwanzilto <span>KWZ</span></h1>
+    <p class="lede">Consulta ao vivo do contrato publicado na testnet Sepolia. Os dados abaixo são lidos direto da blockchain, sem servidor intermediário.</p>
+  </header>
+
+  <section class="card" aria-labelledby="t-info">
+    <h2 id="t-info">Dados do contrato</h2>
+    <dl>
+      <dt>Contrato</dt><dd><a id="c-link" target="_blank" rel="noopener"></a></dd>
+      <dt>Nome</dt><dd id="c-name">carregando…</dd>
+      <dt>Símbolo</dt><dd id="c-symbol">carregando…</dd>
+      <dt>Decimais</dt><dd id="c-decimals">carregando…</dd>
+      <dt>Fornecimento total</dt><dd id="c-supply">carregando…</dd>
+      <dt>Dono</dt><dd id="c-owner">carregando…</dd>
+    </dl>
+    <p class="note" id="c-status"></p>
+  </section>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="t-saldo">
+      <h2 id="t-saldo">Consultar saldo</h2>
+      <form id="f-saldo" class="row" novalidate>
+        <label for="i-addr" style="width:100%">Endereço (0x…)</label>
+        <input id="i-addr" autocomplete="off" spellcheck="false" placeholder="0x…">
+        <button type="submit">Consultar</button>
+        <button type="button" class="ghost" id="b-dono">Usar endereço do dono</button>
+      </form>
+      <div class="result" id="r-saldo" aria-live="polite">Digite um endereço e clique em Consultar.</div>
+    </section>
+
+    <section class="card" aria-labelledby="t-mm">
+      <h2 id="t-mm">Minha carteira (MetaMask)</h2>
+      <div class="row">
+        <button id="b-connect">Conectar MetaMask</button>
+        <button class="ghost" id="b-watch" disabled>Adicionar KWZ à MetaMask</button>
+      </div>
+      <dl>
+        <dt>Conta</dt><dd id="w-account">não conectada</dd>
+        <dt>Saldo</dt><dd id="w-balance">—</dd>
+      </dl>
+      <form id="f-send" class="row" novalidate hidden>
+        <label for="i-to" style="width:100%">Enviar KWZ para</label>
+        <input id="i-to" autocomplete="off" spellcheck="false" placeholder="0x… destinatário">
+        <input id="i-amount" inputmode="decimal" placeholder="Quantidade (ex.: 10)">
+        <button type="submit">Enviar</button>
+      </form>
+      <div class="result" id="r-wallet" aria-live="polite">Conecte para ver seu saldo e enviar tokens.</div>
+    </section>
+  </div>
+
+  <footer>Atividade prática "Minha Criptomoeda". Contrato baseado em OpenZeppelin ERC20 + ERC20Burnable + Ownable. Página feita com ethers.js v6.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.17.0/dist/ethers.umd.min.js"></script>
+<script>
+const CONTRATO = "0xe17AFC889F63a6f440De2282f8c6aC82c74A3c4B";
+const SEPOLIA_ID = 11155111n;
+const SEPOLIA_HEX = "0xaa36a7";
+const RPC_PUBLICO = "https://ethereum-sepolia-rpc.publicnode.com";
+const ETHERSCAN = "https://sepolia.etherscan.io";
+const ABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function totalSupply() view returns (uint256)",
+  "function owner() view returns (address)",
+  "function balanceOf(address) view returns (uint256)",
+  "function transfer(address to, uint256 value) returns (bool)",
+];
+
+const $ = (id) => document.getElementById(id);
+// Leituras usam um nó público da Sepolia: funcionam mesmo sem MetaMask.
+const leitura = new ethers.Contract(CONTRATO, ABI, new ethers.JsonRpcProvider(RPC_PUBLICO, SEPOLIA_ID, { staticNetwork: true }));
+let decimais = 18n, simbolo = "KWZ", dono = null, conta = null;
+
+const fmt = (v) => Number(ethers.formatUnits(v, decimais)).toLocaleString("pt-BR", { maximumFractionDigits: 6 });
+const linkEnd = (a) => `<a href="${ETHERSCAN}/address/${a}" target="_blank" rel="noopener">${a}</a>`;
+
+$("c-link").textContent = CONTRATO;
+$("c-link").href = `${ETHERSCAN}/address/${CONTRATO}`;
+
+async function carregarContrato() {
+  try {
+    const [n, s, d, t, o] = await Promise.all([leitura.name(), leitura.symbol(), leitura.decimals(), leitura.totalSupply(), leitura.owner()]);
+    decimais = d; simbolo = s; dono = o;
+    $("c-name").textContent = n;
+    $("c-symbol").textContent = s;
+    $("c-decimals").textContent = d.toString();
+    $("c-supply").textContent = `${fmt(t)} ${s}`;
+    $("c-owner").innerHTML = linkEnd(o);
+    $("c-status").innerHTML = `<span class="ok">✔ Conectado à Sepolia.</span> Lido em ${new Date().toLocaleString("pt-BR")}.`;
+  } catch (e) {
+    $("c-status").innerHTML = `<span class="err">Não foi possível ler o contrato.</span> Verifique sua internet e recarregue a página. (${e.shortMessage || e.message})`;
+  }
+}
+
+$("f-saldo").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const addr = $("i-addr").value.trim();
+  const out = $("r-saldo");
+  if (!ethers.isAddress(addr)) { out.innerHTML = `<span class="err">Endereço inválido.</span> Ele deve começar com 0x e ter 42 caracteres.`; return; }
+  out.textContent = "Consultando…";
+  try {
+    const saldo = await leitura.balanceOf(addr);
+    out.innerHTML = `<div class="big">${fmt(saldo)} ${simbolo}</div>${linkEnd(ethers.getAddress(addr))}`;
+  } catch (e) { out.innerHTML = `<span class="err">Erro na consulta:</span> ${e.shortMessage || e.message}`; }
+});
+$("b-dono").addEventListener("click", () => { if (dono) { $("i-addr").value = dono; $("f-saldo").requestSubmit(); } });
+
+async function garantirSepolia() {
+  const atual = await window.ethereum.request({ method: "eth_chainId" });
+  if (BigInt(atual) === SEPOLIA_ID) return;
+  await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: SEPOLIA_HEX }] });
+}
+
+async function atualizarCarteira() {
+  if (!conta) {
+    $("w-account").textContent = "não conectada";
+    $("w-balance").textContent = "—";
+    return;
+  }
+  const saldo = await leitura.balanceOf(conta);
+  $("w-account").innerHTML = linkEnd(conta);
+  $("w-balance").textContent = `${fmt(saldo)} ${simbolo}`;
+}
+
+$("b-connect").addEventListener("click", async () => {
+  const out = $("r-wallet");
+  if (!window.ethereum) { out.innerHTML = `<span class="err">MetaMask não encontrada.</span> Instale a extensão em metamask.io e abra esta página por http(s), não como arquivo local.`; return; }
+  try {
+    const contas = await window.ethereum.request({ method: "eth_requestAccounts" });
+    await garantirSepolia();
+    conta = ethers.getAddress(contas[0]);
+    await atualizarCarteira();
+    $("b-watch").disabled = false;
+    $("f-send").hidden = false;
+    $("b-connect").textContent = "Conectada";
+    $("b-connect").disabled = true;
+    out.innerHTML = `<span class="ok">✔ Carteira conectada na Sepolia.</span>`;
+  } catch (e) { out.innerHTML = `<span class="err">Conexão cancelada ou recusada.</span> ${e.shortMessage || e.message || ""}`; }
+});
+
+$("b-watch").addEventListener("click", async () => {
+  try {
+    await window.ethereum.request({ method: "wallet_watchAsset", params: { type: "ERC20", options: { address: CONTRATO, symbol: simbolo, decimals: Number(decimais) } } });
+    $("r-wallet").innerHTML = `<span class="ok">✔ Pedido enviado à MetaMask.</span>`;
+  } catch (e) { $("r-wallet").innerHTML = `<span class="err">Não foi possível adicionar o token.</span> ${e.message || ""}`; }
+});
+
+$("f-send").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const out = $("r-wallet");
+  const para = $("i-to").value.trim();
+  const qtd = $("i-amount").value.trim().replace(",", ".");
+  if (!ethers.isAddress(para)) { out.innerHTML = `<span class="err">Destinatário inválido.</span> Use um endereço 0x com 42 caracteres.`; return; }
+  let valor;
+  try { valor = ethers.parseUnits(qtd, decimais); } catch { out.innerHTML = `<span class="err">Quantidade inválida.</span> Use números, por exemplo 10 ou 2,5.`; return; }
+  if (valor <= 0n) { out.innerHTML = `<span class="err">A quantidade precisa ser maior que zero.</span>`; return; }
+  try {
+    await garantirSepolia();
+    const signer = await new ethers.BrowserProvider(window.ethereum).getSigner();
+    const token = new ethers.Contract(CONTRATO, ABI, signer);
+    out.textContent = "Confirme a transação na MetaMask…";
+    const tx = await token.transfer(para, valor);
+    out.innerHTML = `Transação enviada, aguardando confirmação… <a href="${ETHERSCAN}/tx/${tx.hash}" target="_blank" rel="noopener">ver no Etherscan</a>`;
+    await tx.wait();
+    out.innerHTML = `<span class="ok">✔ ${qtd} ${simbolo} enviados.</span> <a href="${ETHERSCAN}/tx/${tx.hash}" target="_blank" rel="noopener">ver no Etherscan</a>`;
+    await atualizarCarteira();
+  } catch (e) { out.innerHTML = `<span class="err">A transferência não foi feita.</span> ${e.shortMessage || e.message || ""}`; }
+});
+
+if (window.ethereum) window.ethereum.on?.("accountsChanged", (c) => { conta = c[0] ? ethers.getAddress(c[0]) : null; atualizarCarteira(); });
+carregarContrato();
+</script>
+</body>
+</html>

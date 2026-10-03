@@ -1,0 +1,25 @@
+No contracts to compile
+
+Running Solidity tests
+
+
+Running Mocha tests
+
+
+  Kwanzilto
+    ✔ tem o nome, o símbolo e as casas decimais corretos (43ms)
+    ✔ credita todo o fornecimento inicial ao dono
+    ✔ define quem fez o deploy como dono
+    ✔ permite transferir tokens entre contas
+    ✔ impede transferir mais do que o saldo
+    ✔ permite ao dono fazer mint em unidades inteiras
+    ✔ impede que outra conta faça mint
+    ✔ permite queimar os próprios tokens (burn)
+    ✔ permite gastar tokens de terceiros via approve + transferFrom
+
+
+  9 passing (71ms)
+
+
+9 passing (9 mocha)
+
