@@ -13,6 +13,7 @@ Atividade prática "Minha Criptomoeda (Token ERC-20)": criação, testes e deplo
 | Rede | Sepolia (chain ID 11155111) |
 | Endereço do contrato | [`0xe17AFC889F63a6f440De2282f8c6aC82c74A3c4B`](https://sepolia.etherscan.io/address/0xe17AFC889F63a6f440De2282f8c6aC82c74A3c4B) |
 | Dono (conta do deploy) | [`0xd21537EfDcfD163aB35010F52aE62a9d452F27Cf`](https://sepolia.etherscan.io/address/0xd21537EfDcfD163aB35010F52aE62a9d452F27Cf) |
+| Página web do token | https://hilton1.github.io/Kwanzilto/ |
 | Transação de deploy | [`0x2141437a…f50510ac`](https://sepolia.etherscan.io/tx/0x2141437a5220d8182639c0fab0f47b7eb668efa72c7276e08148fcd9f50510ac) (bloco 11811151) |
 
 ---
@@ -132,7 +133,7 @@ Sepolia:
 - consultar o saldo de qualquer endereço (funciona sem carteira, usando um nó público);
 - conectar a MetaMask, ver o próprio saldo, adicionar o KWZ à carteira e enviar tokens.
 
-Página publicada: _(link do GitHub Pages)_
+Página publicada: **https://hilton1.github.io/Kwanzilto/**
 
 ![Página web do token](entrega/pagina-web.png)
 
